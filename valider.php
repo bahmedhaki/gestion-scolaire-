@@ -12,7 +12,9 @@ if ($info = mysqli_fetch_assoc($excute)){
     header("location:afficher etudiant.php");
 }
 else{
-    require_once("index.html");
+?><SCRIPT LANGUAGE="Javascript">alert("mot de pass ou login incorrect !!");</SCRIPT>
+<?php    
+    require_once("index.php");
 }    
 
 

@@ -4,19 +4,7 @@ require_once("connection.php");
 if(isset($_POST['nom']) and isset($_POST['prenom'])){
   if($_POST['nom']!="" and $_POST['prenom']!="" and $_POST['telephone']!="" and $_POST['address']!="" 
   and $_POST['nivea_scolaire']!="" and $_POST['Date']!=""){
-  $name = ($_POST['nom']); 
-  $prenom = ($_POST['prenom']);
-  $sex = ($_POST['sex']);
-  $telephone = ($_POST['telephone']);
-  $address = ($_POST['address']);
-  $nivea_etud = ($_POST['nivea_scolaire']);
-  $section = ($_POST['section']);
-  $date_naissance = ($_POST['Date']);
-  $target_dir = "img/";
-  $target_file = $target_dir . basename($_FILES["photo"]["name"]);
-  $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-  $file_tmp_name = $_FILES['photo']['tmp_name'];
-  move_uploaded_file($file_tmp_name,$target_file);
+
   $code_class=mysqli_query($con,"SELECT code_class from class where niveau='$nivea_etud' and  section='$section'");
   $req=mysqli_query($con,"SELECT count(*) as nb from etudiant where nom='$name' and prenom='$prenom'");
 	$nb=mysqli_fetch_array($req);
@@ -46,36 +34,31 @@ mysqli_close($con);
     </title>
     </head>
 <body>
-    <form method="post" action="ajouteretudian.php" enctype="multipart/form-data">
+    <form method="post" action="saisernote.php" enctype="multipart/form-data">
     <table>
         <tr>
-          <td>Nom</td>
+          <td>semester</td>
           <td><input type="text" name="nom" ></td>     
         </tr>
          <tr>
-          <td>prenom</td>
-          <td><input type="text" name="prenom"></td>     
+          <td>dovior1</td>
+          <td><input type="text" name="dovior1"></td>     
         </tr>
         <tr>
-        <input type="hidden" name="sex" id="sex">
-                      <input type="checkbox"  value="1"> male
-                      <input type="checkbox"  value="2"> femelle
-         </tr>
-         <tr>
-          <td>telephone</td>
-          <td><input type="text" name="telephone"></td>     
+          <td>dovior2</td>
+          <td><input type="text" name="dovior2"></td>     
         </tr>
         <tr>
           <td>address</td>
           <td><input type="text" name="address"></td>     
         </tr>
         <tr>
-           <td>niveau d'etude</td>
-            <td><select name="nivea_scolaire">
-            <option>Première année moyenne</option>
-            <option>deuxième année moyenne</option>
-            <option>troisième année moyenne</option>
-            <option>quatrième année moyenne</option>
+           <td>semester</td>
+            <td><select name="semester">
+            <option>Première semester</option>
+            <option>deuxième semester</option>
+            <option>troisième semester</option>
+            <option>quatrième semester</option>
             </select>
             </td>     
         </tr>

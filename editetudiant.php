@@ -2,7 +2,7 @@
 require_once("verifier.php");
 require_once("connection.php");
 $Code = $_GET['code'];
-$req ="SELECT * FROM  etudiant where (code=$Code) ";
+$req ="SELECT nom FROM  etudiant where (code=$Code) ";
 $rs=mysqli_query($con,$req) or die(mysql_error($con));
 $etud=mysqli_fetch_assoc($rs);
 ?>
@@ -23,6 +23,11 @@ $etud=mysqli_fetch_assoc($rs);
           <td>prenom</td>
           <td><input type="text" name="prenom"value="<?php echo($etud['prenom']) ?>"></td>     
         </tr>
+        <tr>
+        <input type="hidden" name="sex" id="sex">
+                      <input type="checkbox"  value="1"> male
+                      <input type="checkbox"  value="2"> femelle
+         </tr>
          <tr>
           <td>telephone</td>
           <td><input type="text" name="telephone"value="<?php echo($etud['telephone']) ?>"></td>     
