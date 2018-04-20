@@ -9,7 +9,7 @@ if ($info = mysqli_fetch_assoc($excute)){
     session_start();
     $_SESSION['utlisateur']=$info['login'];
     $_SESSION['pass_word']=$info['pass'];
-    header("location:afficher etudiant.php");
+    header("location:page1.php");
 }
 else{
 ?><SCRIPT LANGUAGE="Javascript">alert("mot de pass ou login incorrect !!");</SCRIPT>
