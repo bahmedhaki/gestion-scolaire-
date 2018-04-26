@@ -1,5 +1,4 @@
 <?php 
-include("page1.php");
 require_once("connection.php");
 $login = $_POST['login'];
 $mot_de_pass = $_POST['pass'];
@@ -23,6 +22,9 @@ $etud = mysqli_fetch_assoc($req1);
         $_SESSION['admin']=$info['login'];
 
     header("location:afficher etudiant.php");
+    $_SESSION['utlisateur']=$info['login'];
+    $_SESSION['pass_word']=$info['pass'];
+    header("location:page accueil.php");
 }
 else{
 ?><SCRIPT LANGUAGE="Javascript">alert("mot de pass ou login incorrect !!");</SCRIPT>
