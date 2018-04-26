@@ -1,6 +1,7 @@
 <?php
 require_once("verifier.php");
-require_once("connection.php");  
+require_once("connection.php"); 
+include("page accueil.php"); 
 if(isset($_POST['nom']) and isset($_POST['prenom'])){
   if($_POST['nom']!="" and $_POST['prenom']!="" and $_POST['telephone']!="" and $_POST['address']!="" 
   and $_POST['nivea_scolaire']!="" and $_POST['Date']!=""){
@@ -12,12 +13,12 @@ if(isset($_POST['nom']) and isset($_POST['prenom'])){
   $nivea_etud = ($_POST['nivea_scolaire']);
   $section = ($_POST['section']);
   $date_naissance = ($_POST['Date']);
-  $target_dir = "img/";
+  $target_dir = "img/etudiant";
   $target_file = $target_dir . basename($_FILES["photo"]["name"]);
   $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
   $file_tmp_name = $_FILES['photo']['tmp_name'];
   move_uploaded_file($file_tmp_name,$target_file);
-  $code_class=mysqli_query($con,"SELECT code_class from class where niveau='$nivea_etud' and  section='$section'");
+  
   $req=mysqli_query($con,"SELECT count(*) as nb from etudiant where nom='$name' and prenom='$prenom'");
 	$nb=mysqli_fetch_array($req);
 	if($nb['nb']>0){
@@ -26,10 +27,17 @@ if(isset($_POST['nom']) and isset($_POST['prenom'])){
    
 	}
 	else{
+    $class=mysqli_query($con,"SELECT code_class from class where niveau='$nivea_etud' and  section='$section'");
+    $code_class=mysqli_fetch_array($class);
+    if($code_class['code_class']==0){
+      ?><SCRIPT LANGUAGE="Javascript">alert("erreur! class n'existe pas!");</SCRIPT>
+      <?php
+      }else{
   $req2="INSERT INTO etudiant (code,nom,prenom,telephone,sex,address,photo,nivea_scolaire,date_de_naissance )
-    VALUES (null,'$name', '$prenom','$telephone','$sex','$address','$target_file ','$nivea_etud','$date_naissance','$code_classs')";  
+    VALUES (null,'$name', '$prenom','$telephone','$sex','$address','$target_file ','$nivea_etud','$date_naissance','$code_class')";  
 	mysqli_query($con,$req2);
-	?><SCRIPT LANGUAGE="Javascript">alert("Ajout avec succés!");</SCRIPT><?php
+  ?><SCRIPT LANGUAGE="Javascript">alert("Ajout avec succés!");</SCRIPT><?php
+      }
 	}
 	}
 	else{

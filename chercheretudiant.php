@@ -1,19 +1,23 @@
 <?php
 require_once("verifier.php");
 require_once("connection.php");
-$motcle=" ";
-$motcle2=" ";
-$motcle3=" ";
-if (isset($_POST['nivea_scolaire']) and isset($_POST['section']) ){
-if (isset($_POST['Nom'])){
-    $motcle = $_POST['Nom'];
-    $motcle2=$_POST['nivea_scolaire'];
-    $motcle3=$_POST['section'];
-}
-}
-$req = "SELECT * FROM etudiant where nom like '$motcle' " and "SELECT * FROM class where
- annnee_scolaire like '$motcle2'  and section like '$motcle3' " ;
+include("page accueil.php");
+$nom=" ";
+$niveau=" ";
+$section=" ";
+if (isset($_POST['cherche'])){
+if ($_POST['nivea_scolaire']!='' and $_POST['section']!='' and $_POST['Nom']!='' ){
+    $nom = $_POST['Nom'];
+    $niveau=$_POST['nivea_scolaire'];
+    $section=$_POST['section'];
+
+$req="SELECT code_class FROM class where annnee_scolaire = '$niveau'  and section = '$section' " ;
+$rs=mysqli_query($con,$req) or die(mysql_error($con));
+$nb=mysqli_fetch_array($rs);
+$req1 = "SELECT * FROM etudiant where nom ='$nom' and code_class = '".$nb['code_class']."' ";
 $excute = mysqli_query($con,$req) or die (mysqli_error($con));
+}
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -35,7 +39,7 @@ $excute = mysqli_query($con,$req) or die (mysqli_error($con));
             <option>D</option>
             </select></td>
     Nom:<input type='text' name='Nom' value ="<?php echo($motcle) ?>">         
-    <input type='submit' value='chercher'>
+    <input type='submit' name='cherche' value='chercher'>
     </form>
     <table border = "1" widht="80%">
         <tr>

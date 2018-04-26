@@ -3,14 +3,14 @@ require_once("verifier.php");
 require_once("connection.php");
 include("page accueil.php");
 $Code = $_GET['code'];
-$req ="SELECT * FROM  etudiant where (code=$Code) ";
+$req ="SELECT * FROM  prof where (code=$Code) ";
 $rs=mysqli_query($con,$req) or die(mysql_error($con));
 $etud=mysqli_fetch_assoc($rs);
 ?>
 <!DOCTYPE html>
 <html>
 <body>
-<form method="post" action="modifieretudian.php" enctype="multipart/form-data">
+<form method="post" action="modifierprof.php" enctype="multipart/form-data">
     <table border = "1" widht="80%">
         <tr>
           <td>Code</td>
@@ -38,21 +38,12 @@ $etud=mysqli_fetch_assoc($rs);
           <td><input type="text" name="address"value="<?php echo($etud['address']) ?>"></td>     
         </tr>
         <tr>
-          <td>niveau d'etude</td>
-          <td><input type="text" name="nivea_scolaire"value="<?php echo($etud['nivea_scolaire']) ?>"></td>     
-        </tr>
-        
-        <tr>
           <td>photo</td>
           <td><input type="file" name="photo"id="photo"></td>     
         </tr> 
         <tr>
           <td>photo</td>
           <td><img src="<?php echo($etud['photo'])  ?>"></td>     
-        </tr> 
-        <tr>
-           <td>date de naissance</td>
-           <td><input type="date_add" name="Date"value="<?php echo($etud['date_de_naissance']) ?>"></td>     
         </tr> 
           <td>submit</td>
           <td><input type="submit" value="Enregistrer"></td>     

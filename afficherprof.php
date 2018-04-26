@@ -3,7 +3,7 @@
 require_once("verifier.php");
 require_once("connection.php");
 include("page accueil.php");
-$req = "SELECT * FROM etudiant";
+$req = "SELECT * FROM prof";
 $excute = mysqli_query($con,$req) or die (mysqli_error($con));
 ?>
 <!DOCTYPE html>
@@ -17,16 +17,13 @@ $excute = mysqli_query($con,$req) or die (mysqli_error($con));
         
         <?php  while($info = mysqli_fetch_assoc($excute)) { ?>
         <tr>
-              <td><?php echo($info['code'])  ?> </td>
               <td><?php echo($info['nom'])  ?> </td>
               <td><?php echo($info['prenom'])  ?> </td>
               <td><?php echo($info['telephone'])  ?> </td>
               <td><?php echo($info['address'])  ?> </td>
-              <td><?php echo($info['nivea_scolaire'])  ?> </td>
-              <td><?php echo($info['date_de_naissance'])  ?> </td>
               <td><img src="<?php echo($info['photo'])  ?>"></td>
-              <td><a href ="editetudiant.php ?code=<?php echo($info['code'])  ?>"> EDITER </a> </td>
-              <td><a href ="supprimeretudiant.php ?code=<?php echo($info['code'])  ?>"> Supprimer </a> </td>
+              <td><a href ="editeprof.php ?code=<?php echo($info['code'])  ?>"> EDITER </a> </td>
+              <td><a href ="supprimerprof.php ?code=<?php echo($info['code'])  ?>"> Supprimer </a> </td>
         </tr>
 
         <?php } ?> 

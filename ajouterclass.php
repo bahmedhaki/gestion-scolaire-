@@ -1,6 +1,7 @@
 <?php
 require_once("verifier.php");
 require_once("connection.php");
+include("page accueil.php");
 if(isset($_POST['Année_Scolaire'])){
     if ($_POST['Année_Scolaire']!= '' and $_POST['nivea_scolaire'] != '' and $_POST['section'] != '' ){
 $Année_Scolaire = $_POST['Année_Scolaire']; 
@@ -62,11 +63,15 @@ mysqli_close($con);
             </select></td>     
         </tr>
         <tr>
+        <input type="hidden" name="type_matiere" id="type_matiere">
+                      <input type="checkbox"  value="1"> Matiere princibale
+                      <input type="checkbox"  value="2"> matiere socondaire
+         </tr>
+        <tr>
          <td>submit</td>
           <td><input type="submit" value="Enregistrer"></td>     
         </tr>
-        </table>
-            
+        </table> 
     </form>
     </body>
 </html>

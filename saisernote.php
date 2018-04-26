@@ -1,29 +1,59 @@
 <?php
 require_once("verifier.php");
-require_once("connection.php");  
-if(isset($_POST['nom']) and isset($_POST['prenom'])){
-  if($_POST['nom']!="" and $_POST['prenom']!="" and $_POST['telephone']!="" and $_POST['address']!="" 
-  and $_POST['nivea_scolaire']!="" and $_POST['Date']!=""){
+require_once("connection.php");
+include("page accueil.php");
+$code_etud=$_GET['code'];  
+$code_classe=$_GET['code_class'];  
+$code_cour=$_GET['code_coure']; 
+$note_semester=NULL;
+$note_annualle=NULL;
 
-  $code_class=mysqli_query($con,"SELECT code_class from class where niveau='$nivea_etud' and  section='$section'");
-  $req=mysqli_query($con,"SELECT count(*) as nb from etudiant where nom='$name' and prenom='$prenom'");
-	$nb=mysqli_fetch_array($req);
-	if($nb['nb']>0){
-	?><SCRIPT LANGUAGE="Javascript">alert("erreur! cet enregistrement existe déja!");</SCRIPT>
-  <?php
-   
-	}
-	else{
-  $req2="INSERT INTO etudiant (code,nom,prenom,telephone,sex,address,photo,nivea_scolaire,date_de_naissance )
-    VALUES (null,'$name', '$prenom','$telephone','$sex','$address','$target_file ','$nivea_etud','$date_naissance','$code_classs')";  
-	mysqli_query($con,$req2);
-	?><SCRIPT LANGUAGE="Javascript">alert("Ajout avec succés!");</SCRIPT><?php
-	}
-	}
-	else{
-  ?><SCRIPT LANGUAGE="Javascript">alert("Vous devez remplir tous les champs!");	</SCRIPT>
-  <?php
-	}
+$req=mysqli_query($con,"SELECT count(*) as nb from note where code_etud ='$code_etud' and  code_class ='$code_classe' 
+                     and  code_coure = '$code_cour'");
+$nb=mysqli_fetch_array($req);
+if($nb['nb']>0){
+?><SCRIPT LANGUAGE="Javascript">alert("erreur! cet enregistrement existe déja!");</SCRIPT>
+<?php
+    header("location:ajouternote.php");
+}
+else{  
+$req3=mysqli_query($con,"SELECT  type_matiere from cours where code_class ='$code_classe' ");
+$type_matiere=mysqli_fetch_array($req3);
+
+if(isset($_POST['dovior1']) and isset($_POST['semester']) and isset($_POST['examan'])){
+  if($_POST['dovior1']!="" and $_POST['semester']!="" and $_POST['control_continu']!=""){
+ 
+$dovior1=$_POST['dovior1'];
+$control_continu=$_POST['control_continu'];
+$examan=$_POST['examan'];
+
+
+if ($type_matiere['type_matiere'] == 2){
+    $dovior2=NULL;
+    $note=(($dovior1 + $control_continu) + ($examan * 3)) / 5 ;
+
+}else{
+    $dovior2=$_POST['dovior2'];
+    $note=(($dovior1 + $dovior2 + $control_continu)/3 * 2 + ($examan * 3)) / 5 ;
+
+}
+$control_continu=$_POST['control_continu'];
+$semester=$_POST['semester'];
+$req1=mysqli_query($con,"SELECT ceoffesion  from cours where code_coure ='$code_cour'");
+$ceoffesion=mysqli_fetch_array($req1);
+$ceoff=$ceoffesion['ceoffesion'];  
+$resultat = $note * $ceoff;
+	
+$req2="INSERT INTO note (code_note,code_class,code_coure,semester,devoir1,devoir2,examan,control,note,resultat,note_semester,note_annualle,code_etud )
+    VALUES (null,'$code_classe', '$code_cour','$semester','$dovior1','$dovior2','$examan','$control_continu','$note','$resultat','$note_semester','$note_annualle','$code_etud')";  
+mysqli_query($con,$req2);
+?><SCRIPT LANGUAGE="Javascript">alert("Ajout avec succés!");</SCRIPT><?php
+}
+else{
+?><SCRIPT LANGUAGE="Javascript">alert("Vous devez remplir tous les champs!");	</SCRIPT>
+<?php
+}
+}
 }
 mysqli_close($con);
 ?>    
@@ -36,21 +66,23 @@ mysqli_close($con);
 <body>
     <form method="post" action="saisernote.php" enctype="multipart/form-data">
     <table>
-        <tr>
-          <td>semester</td>
-          <td><input type="text" name="nom" ></td>     
-        </tr>
          <tr>
           <td>dovior1</td>
           <td><input type="text" name="dovior1"></td>     
         </tr>
         <tr>
+        <?php if ($type_matiere['type_matiere']== 1){ ?>
           <td>dovior2</td>
           <td><input type="text" name="dovior2"></td>     
         </tr>
+        <?php } ?>
         <tr>
-          <td>address</td>
-          <td><input type="text" name="address"></td>     
+          <td>control continu</td>
+          <td><input type="text" name="control_continu"></td>     
+        </tr>
+        <tr>
+          <td>examan</td>
+          <td><input type="text" name="examan"></td>     
         </tr>
         <tr>
            <td>semester</td>
@@ -58,32 +90,13 @@ mysqli_close($con);
             <option>Première semester</option>
             <option>deuxième semester</option>
             <option>troisième semester</option>
-            <option>quatrième semester</option>
             </select>
             </td>     
-        </tr>
-        <tr><td>Section</td>
-          <td><select name="section">
-            <option>A</option>
-            <option>B</option>
-            <option>C</option>
-            <option>D</option>
-            </select></td> 
         </tr> 
-        <tr>
-        <tr>
-          <td>photo</td>
-          <td><input type="file" name="photo"id="photo"></td>     
+        <td>submit</td>
+            <td><input type="submit" value="Enregistrer"></td>     
         </tr>
-           <td>date de naissance</td>
-           <td><input type="date" name="Date"></td>     
-        </tr> 
-          <td>submit</td>
-          <td><input type="submit" value="Enregistrer"></td>     
-        </tr>
-      </tr>
         </table>
-            
     </form>
     </body>
 </html>
