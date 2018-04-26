@@ -19,7 +19,7 @@ if(isset($_POST['nom']) and isset($_POST['prenom'])){
   $file_tmp_name = $_FILES['photo']['tmp_name'];
   move_uploaded_file($file_tmp_name,$target_file);
   
-  $req=mysqli_query($con,"SELECT count(*) as nb from etudiant where nom='$name' and prenom='$prenom'");
+  $req=mysqli_query($con,"SELECT count(*) as nb from etudiant where nom='$name' and prenom='$prenom'") or die (mysqli_error($con));
 	$nb=mysqli_fetch_array($req);
 	if($nb['nb']>0){
 	?><SCRIPT LANGUAGE="Javascript">alert("erreur! cet enregistrement existe déja!");</SCRIPT>
@@ -27,7 +27,7 @@ if(isset($_POST['nom']) and isset($_POST['prenom'])){
    
 	}
 	else{
-    $class=mysqli_query($con,"SELECT code_class from class where niveau='$nivea_etud' and  section='$section'");
+    $class=mysqli_query($con,"SELECT code_class from class where nivea_scolaire ='$nivea_etud' and  section='$section'") or die (mysqli_error($con));
     $code_class=mysqli_fetch_array($class);
     if($code_class['code_class']==0){
       ?><SCRIPT LANGUAGE="Javascript">alert("erreur! class n'existe pas!");</SCRIPT>
@@ -64,11 +64,6 @@ mysqli_close($con);
           <td>prenom</td>
           <td><input type="text" name="prenom"></td>     
         </tr>
-        <tr>
-        <input type="hidden" name="sex" id="sex">
-                      <input type="checkbox"  value="1"> male
-                      <input type="checkbox"  value="2"> femelle
-         </tr>
          <tr>
           <td>telephone</td>
           <td><input type="text" name="telephone"></td>     
@@ -96,13 +91,18 @@ mysqli_close($con);
             </select></td> 
         </tr> 
         <tr>
-        <tr>
           <td>photo</td>
           <td><input type="file" name="photo"id="photo"></td>     
         </tr>
+        <tr>
            <td>date de naissance</td>
            <td><input type="date" name="Date"></td>     
         </tr> 
+        <tr>
+        <input type="hidden" name="sex" id="sex">
+              <td> <input type="checkbox"  value="1">  Male </td> 
+              <td> <input type="checkbox"  value="2"> Femelle </td>
+         </tr>
           <td>submit</td>
           <td><input type="submit" value="Enregistrer"></td>     
         </tr>
