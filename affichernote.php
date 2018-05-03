@@ -1,11 +1,7 @@
-
 <?php
 require_once("verifier.php");
 require_once("connection.php");
 include("page accueil.php");
-session_start();
-
-
 $nivea_scolaire=$_POST['nivea_scolaire'];
 $section=$_POST['section'];
 $nom_module=$_POST['nom_module'];

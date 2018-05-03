@@ -1,5 +1,5 @@
 <?php
-require_once("verifier.php");
+
 require_once("connection.php");
 $req = "SELECT * FROM etudiant";
 $excute = mysqli_query($con,$req) or die (mysqli_error($con));
@@ -10,12 +10,21 @@ $excute = mysqli_query($con,$req) or die (mysqli_error($con));
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="style1.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>  
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />  
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> 
 <link rel="stylesheet" href="style2.css">
 <link rel="stylesheet" href="style3.css">
 <style>
 html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 </style>
 <body class="w3-light-grey">
+
+<div >
+  <?php
+    //include("ajouter.php");
+  ?>
+</div>
 
 <!-- Top container -->
 <div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
@@ -45,13 +54,13 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     <a onclick="FuncEnseignant()" href="javascript:void(0)" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>Enseignant<i class="fa fa-caret-down"></i></a>
     <div id="Enseignant" class="w3-bar-block w3-hide w3-padding-large w3-medium ">
       <a href="afficherprof.php" class="w3-bar-item w3-button w3-light-grey">Liste Des Enseignant </a>
-      <a href="ajouterprof.php" class="w3-bar-item w3-button">Ajouter un étudiant</a>
-      <a href="#" class="w3-bar-item w3-button">Chercher un étudiant</a>
+      <a href="#" data-toggle="modal" data-target="#add_data_Modal" class="w3-bar-item w3-button">Ajouter un prof</a>
+      <a href="#" class="w3-bar-item w3-button">Chercher un prof</a>
     </div>
     <a onclick="FuncEtudiants()" href="javascript:void(0)" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  Etudiants <i class="fa fa-caret-down"></i></a>
     <div id="Etudiants" class="w3-bar-block w3-hide w3-padding-large w3-medium ">
       <a href="afficher etudiant.php" class="w3-bar-item w3-button w3-light-grey">Liste Des Etudiants </a>
-      <a href="ajouteretudian.php" class="w3-bar-item w3-button">Ajouter un étudiant</a>
+      <a  href="ajouteretudian.php" class="w3-bar-item w3-button">Ajouter un étudiant</a>
       <a href="chercheretudiant.php" class="w3-bar-item w3-button">Chercher un étudiant</a>
     </div>
     <a onclick="FuncMatières()" href="javascript:void(0)" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  Matières <i class="fa fa-caret-down"></i></a>
@@ -63,18 +72,18 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     <a onclick="FuncClasse()" href="javascript:void(0)" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  Salle DE Classe <i class="fa fa-caret-down"></i></a>
     <div id="Classe" class="w3-bar-block w3-hide w3-padding-large w3-medium ">
       <a href="afficher etudiant.php" class="w3-bar-item w3-button w3-light-grey">Liste Des Classes </a>
-      <a href="ajouterclass.php" class="w3-bar-item w3-button">Ajouter Un Classe</a>
+      <a href="#" data-toggle="modal" data-target="#add_data_Modal" class="w3-bar-item w3-button">Ajouter Un Classe</a>
       <a href="afficherclass.php" class="w3-bar-item w3-button">Chercher Un Classe</a>
     </div>
     <a onclick="FuncAbsences()" href="javascript:void(0)" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  Absences <i class="fa fa-caret-down"></i></a>
     <div id="Absences" class="w3-bar-block w3-hide w3-padding-large w3-medium ">
-      <a href="afficher etudiant.php" class="w3-bar-item w3-button w3-light-grey">Liste Des Absences </a>
+      <a href="ListeAbsences.php" class="w3-bar-item w3-button w3-light-grey">Liste Des Absences </a>
       <a href="#" class="w3-bar-item w3-button">Ajouter Un Absence</a>
       <a href="#" class="w3-bar-item w3-button">Chercher Un Absences</a>
     </div>
     <a onclick="FuncNote()" href="javascript:void(0)" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  Note <i class="fa fa-caret-down"></i></a>
     <div id="Note" class="w3-bar-block w3-hide w3-padding-large w3-medium ">
-      <a href="afficher etudiant.php" class="w3-bar-item w3-button w3-light-grey">Liste Des Note </a>
+      <a href="affichernote.php" class="w3-bar-item w3-button w3-light-grey">Liste Des Note </a>
       <a href="#" class="w3-bar-item w3-button">Ajouter Un Note</a>
       <a href="#" class="w3-bar-item w3-button">Chercher Un Note</a>
     </div>
@@ -135,10 +144,6 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
       </div>
     </div>
   </div>
-
-  
-  
-
 
 <script>
 // Accordion 

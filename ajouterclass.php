@@ -64,8 +64,8 @@ mysqli_close($con);
         </tr>
         <tr>
         <input type="hidden" name="type_matiere" id="type_matiere">
-                      <input type="checkbox"  value="1"> Matiere princibale
-                      <input type="checkbox"  value="2"> matiere socondaire
+        <input type="checkbox"  value="1"> Matiere princibale
+        <input type="checkbox"  value="2"> matiere socondaire
          </tr>
         <tr>
          <td>submit</td>
